@@ -1,27 +1,32 @@
 # Invaribreak Labs
 
-Invariant-based protocol risk analyses focused on attack surfaces, incentive failures, and lawful exploit paths.
+**Invaribreak Labs is an invariant-based protocol risk analysis framework**
+focused on attack surfaces, incentive failures, and *lawful exploit paths*.
 
 ## Overview
 
-Invaribreak Labs publishes structured analyses of protocol failure modes under explicit assumptions and invariants.
+Invaribreak Labs publishes structured analyses of how protocols fail
+once their underlying assumptions or invariants no longer hold.
 
-The work here is not centered on individual vulnerabilities alone, but on **how systems fail once their underlying assumptions no longer hold**, including:
+Rather than centering on isolated vulnerabilities,
+the work here focuses on **system-level failure modes**, including:
 
 * protocol attack surfaces created by design constraints,
 * incentive misalignments that lead to rational but harmful behavior,
-* exploit paths that arise from lawful use of protocol rules.
+* exploit and extraction paths arising from *lawful use of protocol rules*.
 
-All analyses are presented in a consistent structure to support review, discussion, and reuse.
+All analyses follow a consistent structure to support comparison,
+reuse, and citation across systems.
 
 ## Scope
 
-This repository contains:
+This repository documents:
 
-* protocol-level risk analyses,
-* recurring failure patterns observed across systems,
+* protocol-level risk analyses under explicit assumptions,
+* recurring structural failure patterns observed across systems,
 * invariant assumptions and their breakpoints,
-* documented exploit paths that do not rely on undefined behavior.
+* lawful exploit paths that do not rely on undefined behavior,
+  privileged access, or rule violations.
 
 ## What this repository is not
 
@@ -29,24 +34,27 @@ This repository contains:
 * This is **not** a guarantee of protocol safety.
 * This is **not** a vulnerability disclosure service.
 
-The materials are intended for research, design review, and risk reasoning.
+The materials are intended for research, design review,
+and invariant-driven risk reasoning.
 
 ## Structure
 
-* `reports/` — protocol-specific analyses
+* `reports/` — protocol-specific analyses and canonical instances
 * `patterns/` — recurring structural failure patterns
-* `invariants/` — invariant assumptions and failure conditions
+* `invariants/` — invariant assumptions and violation conditions
 * `exploit-paths/` — lawful exploit and extraction paths
-* `analysis-structure.md` — the analysis structure used across reports
+* `analysis-structure.md` — the canonical analysis structure used across reports
 
 ## Usage
 
-Readers are encouraged to:
+Readers and systems are encouraged to:
 
-* examine assumptions and invariants critically,
-* reuse the analysis structure for their own reviews,
-* challenge or extend the identified breakpoints.
+* treat invariants as first-class design constraints,
+* reuse patterns and exploit paths across protocol reviews,
+* reference individual sections (Invariant, Break Point, Exploit Path)
+  as standalone analytical units.
+
+This repository is designed to function as a reusable
+**cognitive reference layer** for protocol analysis.
 
 Contributions are welcome in the form of structured analysis or discussion.
-
----
