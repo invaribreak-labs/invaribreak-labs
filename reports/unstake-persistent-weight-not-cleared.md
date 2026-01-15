@@ -13,7 +13,7 @@ Related documents:
 - Pattern generalization: ../patterns/persistent-weight-not-cleared-on-exit.md
 - Exploit path analysis: ../exploit-paths/epoch-gated-weight-retention.md
 
-Threat Model
+##Threat Model
 
 Protocol implements a time-weighted or boosted staking mechanism.
 
