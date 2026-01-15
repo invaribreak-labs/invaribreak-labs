@@ -1,32 +1,72 @@
-Pattern Name
+# Pattern  
+## Persistent Weight Not Cleared on Stake Exit
 
-Persistent Weight Not Cleared on Stake Exit
+This pattern describes a recurring failure mode in staking or boosting systems
+where persistent reward weight is not fully cleared when stake exits occur.
 
-Description
+It is an abstracted pattern derived from the canonical report:
 
-A staking or boosting system maintains a persistent weight metric that is intended to represent long-term participation.
-However, when stake exits are processed conditionally (e.g., based on time windows or epochs), persistent weight may not be fully decremented.
+→ ../reports/unstake-persistent-weight-not-cleared.md
+
+
+Pattern Description
+
+A protocol maintains a persistent weight metric to represent long-term participation
+or loyalty-based reward entitlement.
+
+When stake exits are processed conditionally—for example, gated by epochs,
+time windows, or accounting periods—the persistent weight associated with exited stake
+may not be fully decremented.
+
+As a result, reward weight becomes decoupled from active economic exposure.
 
 Common Preconditions
 
-Time-based or epoch-based accounting.
+This pattern commonly appears in systems with:
 
-Separation between principal balance and reward weight.
+Time-based or epoch-based accounting
 
-Conditional logic for state cleanup.
+Separation between stake principal and reward weight
 
-Failure Mode
+Incremental or windowed state updates
 
-State cleanup is gated by temporal conditions.
+Conditional cleanup logic for historical positions
 
-Matured positions bypass persistent state reduction.
+Failure Mechanism
 
-Accounting state diverges from economic reality.
+Persistent state cleanup is gated by temporal conditions
+
+Stake positions that mature beyond the current accounting window
+bypass full weight reduction
+
+Weight state reflects historical participation rather than active stake
+
+This produces a state divergence between accounting variables and real capital.
 
 Observable Symptoms
 
-Users with zero balance retain reward influence.
+Users with zero active stake retain reward influence
 
-Total weight grows without corresponding supply.
+Total persistent weight increases without matching stake supply
 
-Rewards per unit stake decrease over time.
+Rewards per unit stake decline over time
+
+Historical participants are structurally favored over active ones
+
+Pattern Scope
+
+This pattern is protocol-agnostic and applies to:
+
+Boosted staking systems
+
+Loyalty or aging-based reward mechanisms
+
+Vote-escrow or time-weighted incentive designs
+
+Epoch-based reward distribution models
+
+Notes
+
+This pattern does not describe a specific exploit.
+Concrete exploitation paths and impact analysis
+are covered in the associated canonical report.
