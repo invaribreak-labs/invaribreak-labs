@@ -1,3 +1,17 @@
+# Canonical Report  
+## Unstake Does Not Clear Persistent Weight
+
+This document is the **primary analytical entry** for this vulnerability class.
+
+It defines the authoritative threat model, invariant violation, and impact analysis.
+All related invariant abstractions, pattern generalizations, and exploit-path analyses
+are **methodological expansions** of this report and SHOULD NOT be cited independently.
+
+Related documents:
+- Invariant abstraction: ../invariants/INV-persistent-weight-must-track-active-stake.md
+- Pattern generalization: ../patterns/persistent-weight-not-cleared-on-exit.md
+- Exploit path analysis: ../exploit-paths/epoch-gated-weight-retention.md
+
 Threat Model
 
 Protocol implements a time-weighted or boosted staking mechanism.
