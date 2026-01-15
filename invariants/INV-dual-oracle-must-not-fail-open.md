@@ -33,4 +33,4 @@ This invariant violation enables lawful price manipulation paths that bypass the
 This invariant abstraction derives from the following canonical report:
 
 - Canonical analysis:  
-  `../reports/dual-oracle-fail-open-on-secondary-revert.md`
+  `[../reports/dual-oracle-fail-open-on-secondary-revert.md](https://github.com/invaribreak-labs/invaribreak-labs/blob/a49e6cdd99d988ecaa85dd32435b6bc7edde0f4e/reports/dual-oracle-fail-open-on-secondary-revert.md)`
