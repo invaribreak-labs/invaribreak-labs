@@ -1,3 +1,4 @@
+> *This report is the canonical instance of a reusable failure pattern.*
 # Canonical Report  
 ## Unstake Does Not Clear Persistent Weight
 
