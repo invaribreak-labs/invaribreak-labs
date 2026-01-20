@@ -1,37 +1,24 @@
 ```json
 {
-  "naming_slug": "price-temporal-state-divergence-spot-twap-min",
-  "summary": "The BaseOracle contract derives an asset price by selecting the minimum of an instantaneous spot price obtained from an AMM pool and a time‑weighted average price (TWAP). The spot price reflects the current reserves of the pool, while the TWAP aggregates historical data. When the spot price is temporarily depressed, the minimum function yields a price that diverges from the longer‑term TWAP reference.",
-  "threat_model": {
-    "threat_source": "External contract capable of performing token swaps that modify AMM pool reserves.",
-    "threat_boundary": "Oracle price computation that combines spot price and TWAP using a minimum selection."
-  },
-  "assumptions": [
-    "The protocol is deployed on the Ethereum Virtual Machine and written in Solidity.",
-    "BaseOracle reads the spot price via a call to IUniswapV2Pair.getReserves().",
-    "A separate component provides a TWAP value for the same asset.",
-    "The final price is calculated as Math.min(spotPrice, twapPrice).",
-    "External contracts can interact with the AMM pool within the same transaction."
+  "title": "Critical Oracle Manipulation: 'min(Spot, TWAP)' logic in BaseOracle enables massive under‑collateralized borrowing via price dumping",
+  "summary": "BaseOracle computes an asset price by taking the minimum of an instantaneous spot price from a Uniswap V2 pair and a time‑weighted average price (TWAP). When the spot price is temporarily depressed, the minimum function yields a price that diverges from the stable TWAP reference, allowing debt valuation to be based on the manipulated spot price.",
+  "component_analysis": [
+    "BaseOracle contract – provides the final price used for borrowing decisions.",
+    "Uniswap V2 pair – supplies the instantaneous spot price via getReserves().",
+    "TWAP aggregator – supplies a time‑weighted average price for the same asset.",
+    "Borrowing contract (e.g., SmartLoan) – enforces collateral requirements using the price from BaseOracle.",
+    "External contract capable of flash‑loan and token swaps – can alter the AMM reserves within a single transaction."
   ],
-  "system_model": {
-    "components": [
-      "BaseOracle contract that computes asset prices.",
-      "Uniswap V2 pair contract serving as the AMM pool for spot price extraction.",
-      "TWAP aggregator contract supplying a time‑weighted average price.",
-      "Borrowing contract (e.g., SmartLoan) that uses the oracle price for collateral checks.",
-      "External contracts that can execute token swaps against the AMM pool."
-    ],
-    "data_flow": [
-      "1. Borrowing contract requests the price of an asset from BaseOracle.",
-      "2. BaseOracle queries the AMM pair for current reserves to compute the spot price.",
-      "3. BaseOracle obtains the TWAP value from the aggregator.",
-      "4. BaseOracle selects the minimum of the spot price and the TWAP value as the final price.",
-      "5. Borrowing contract uses the final price to evaluate borrowing limits."
-    ]
+  "failure_mechanism": "The oracle selects the minimum of spotPrice and twapPrice. A malicious actor can depress spotPrice in the AMM pool (e.g., via a flash‑loan‑driven swap). Because the minimum function prefers the lower value, the final price follows the depressed spotPrice, causing the borrowing contract to accept a loan amount that is far larger than the collateral would support under the TWAP reference.",
+  "associated_knowledge": {
+    "invariant_id": "INV-BASEORACLE-PRICE-VAL-001",
+    "pattern_id": "PATTERN-MIN-SPOT-TWAP",
+    "exploit_id": "EXPLOIT-MIN-SPOT-TWAP"
   },
-  "break_point": {
-    "location": "During price computation, the oracle selects the final price before reconciling the provisional spot price with the stable TWAP reference.",
-    "behavior": "If the spot price is temporarily depressed, the final price reflects this provisional value, creating a state inconsistency between the debt valuation and the longer‑term price reference."
-  }
+  "impact": {
+    "direct": "The borrowing contract can issue loans whose debt valuation is based on an artificially low spot price, allowing acquisition of assets worth many times the posted collateral.",
+    "indirect": "Such under‑collateralized loans can drain the protocol’s liquidity, trigger cascading liquidations, and erode user confidence in the platform."
+  },
+  "fix": "Separate pricing logic for collateral and debt: use min(spot, TWAP) only for collateral valuation and use max(spot, TWAP) (or exclusively TWAP) for debt valuation. Alternatively, eliminate reliance on the spot price from AMM reserves for debt pricing and rely solely on a trusted TWAP or external feed. Add sanity checks that reject price updates when spotPrice deviates sharply from TWAP within a single block."
 }
 ```
