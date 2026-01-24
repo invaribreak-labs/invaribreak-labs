@@ -1,29 +1,30 @@
-# Pattern: Spot‑TWAP Minimum Selection Temporal Divergence
+# Pattern: Conservative Selection Asymmetry in Multi-Source Oracles
 
 **Severity**: Critical
 
 **Category**: Temporal State Violation
 
 ## Summary
-An oracle that computes a debt valuation price by taking the minimum of an instantaneous spot price from an AMM pool and a time‑weighted average price (TWAP) can produce a transiently low price when the spot price is temporarily depressed.
+An oracle architecture that applies a globally 'conservative' selection logic (such as minimum value) across both asset and liability valuations, potentially prioritizing transient state fluctuations over stable reference data.
 
 ## Consequence
-The borrowing contract may consider a loan adequately collateralized while the true market value of the debt remains high, resulting in protocol under‑collateralization and potential depletion of liquidity.
+The system may adopt an artificially depressed valuation for obligations, leading to a divergence between recorded state and actual market value, which results in the depletion of system liquidity and internal insolvency.
 
 ## Trigger Conditions
-- The oracle combines a spot price obtained from an AMM pool with a TWAP using a min() operation for debt valuation.
-- The spot price can be altered within a single transaction (e.g., by a large trade that changes pool reserves).
-- The altered spot price becomes lower than the TWAP at the moment of price computation.
-- A borrowing operation queries the oracle and uses the returned price to assess collateral adequacy.
+- Oracle uses a selection function (e.g., Math.min) to choose between an instantaneous state (spot) and a stabilized state (TWAP).
+- The resulting value is used as a denominator or a valuation metric for liabilities/debt.
+- The instantaneous state is sourced from a pool whose reserves can be modified within a single atomic execution environment.
+- The protocol lacks context-aware pricing logic that distinguishes between collateral-side and debt-side valuation requirements.
 
 ## Failure Signature
 ### On-Chain
-- Oracle price for an asset drops sharply within one block while the TWAP remains stable.
-- Borrowing contract emits an event approving a loan amount that is large relative to the collateral after the price drop.
-- Price selection logic logs indicate the use of the min() function for the final price.
+- Execution of debt-increasing functions where the valuation is derived from a point-in-time reserve check (getReserves).
+- Oracle final price output matches the lower of two sources during a period of high volatility or sudden reserve shifts.
+- The price returned by the oracle diverges significantly from the stabilized secondary source (TWAP) within the same block.
 ### Off-Chain
-- Monitoring systems detect a significant divergence between spot price feeds and TWAP feeds for the same asset.
+- External monitor alerts for significant divergence between AMM spot prices and time-weighted average prices for borrowable assets.
+- Detection of high-volume borrowing transactions occurring immediately after a sharp, single-block price drop in the underlying pool.
 
 ## References
-- [Day 1 Report](../reports/analysis-valuation-temporal-state-divergence-spot-twap-min.md)
-- [Invariant](../invariants/INV-valuation-temporal-state-divergence-spot-twap-min.md)
+- [Day 1 Report](https://github.com/invaribreak-labs/invaribreak-labs/blob/main/reports/analysis-valuation-temporal-state-divergence-spot-twap-min.md)
+- [Invariant](https://github.com/invaribreak-labs/invaribreak-labs/blob/main/invariants/INV-valuation-temporal-state-divergence-spot-twap-min.md)
