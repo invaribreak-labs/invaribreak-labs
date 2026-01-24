@@ -1,29 +1,30 @@
-# Pattern: Collateral Surplus Retention on Better‑Price Fill
+# Pattern: Collateral Surplus Retention on Better-Price Execution
 
 **Severity**: Critical
 
-**Category**: Temporal State Violation
+**Category**: Accounting State Inconsistency
 
 ## Summary
-When a limit order is executed at a price better than the limit price, the matching logic deducts only the execution amount from the locked collateral and fails to release the surplus, leaving residual locked balance for the maker.
+An accounting failure occurs when a system locks collateral based on a maximum potential obligation but only deducts the actual execution amount during a settlement event, failing to release the surplus back to the user's available balance.
 
 ## Consequence
-The maker ends up with a non‑zero locked balance while having no open orders, causing the surplus funds to remain permanently inaccessible.
+The system enters a state of permanent collateral locking where a user's locked balance remains non-zero despite having no active obligations or open orders. This creates a divergence between the total tracked collateral and the sum of active liabilities.
 
 ## Trigger Conditions
-- A limit order locks the full quote‑amount based on its limit price before matching.
-- The order is matched at an execution price lower than the limit price.
-- The matching function calls the portfolio's execution routine without invoking any surplus‑refund logic.
-- The portfolio's execution routine deducts only the execution amount from the locked collateral.
+- The system uses a pessimistic locking mechanism that secures the maximum possible quote amount at the time of order creation.
+- The execution engine supports matching at a price more favorable than the original limit price.
+- The settlement routine handles the transfer of execution funds but lacks a reconciliation step to adjust the remaining locked collateral.
+- The order lifecycle transitions to a 'completed' or 'filled' state, removing the record of the original obligation while the surplus remains in a locked state.
 
 ## Failure Signature
 ### On-Chain
-- Locked collateral for a trader remains > 0 after the order is marked filled and removed from the order book.
-- Invariant violation: locked collateral ≠ sum of (price × remaining quantity) of all open orders for the trader.
+- Total locked collateral for an account is greater than the sum of (limit price * remaining quantity) for all active orders.
+- A 'Filled' status is assigned to an order without a corresponding 'Release' or 'Refund' event for the surplus collateral.
+- The sum of all traders' locked balances in the accounting contract exceeds the total value required to cover the current order book.
 ### Off-Chain
-- Monitoring dashboards report a mismatch between reported locked balances and the list of active orders.
-- Audit logs show order fill events without corresponding collateral‑release events.
+- Audit logs show execution events where 'execution price' < 'order limit price' without subsequent portfolio adjustment calls.
+- Dashboard monitoring indicates accounts with zero active orders but positive 'locked' balance values.
 
 ## References
-- [Day 1 Report](../reports/analysis-collateral-state-inconsistency-better-price-fill.md)
-- [Invariant](../invariants/INV-collateral-state-inconsistency-better-price-fill.md)
+- [Day 1 Report](https://github.com/invaribreak-labs/invaribreak-labs/blob/main/reports/analysis-collateral-state-inconsistency-better-price-fill.md)
+- [Invariant](https://github.com/invaribreak-labs/invaribreak-labs/blob/main/invariants/INV-collateral-state-inconsistency-better-price-fill.md)
