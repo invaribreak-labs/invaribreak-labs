@@ -8,4 +8,4 @@
 | **valuation-temporal-state-divergence-spot-twap-min** | [Analysis](reports/analysis-valuation-temporal-state-divergence-spot-twap-min.md) | [Def](invariants/INV-valuation-temporal-state-divergence-spot-twap-min.md) | [Pattern](patterns/valuation-temporal-state-divergence-spot-twap-min.md) | [Path](exploit-paths/valuation-temporal-state-divergence-spot-twap-min.md) |
 
 
-*Last Updated: 2026-01-25T14:21:10.034Z*
+*Last Updated: 2026-01-25T14:40:33.555Z*
