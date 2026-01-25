@@ -33,7 +33,7 @@
   "break_point_formal": {
     "intended_state": "ExecutionPrice ≈ TWAP (within deviation limit)",
     "actual_state": "ExecutionPrice ≈ SpotPrice (where SpotPrice = TWAP + Deviation)",
-    "divergence_condition": "BaselineValuation == InstantaneousSpotPrice AND InstantaneousSpotPrice != TimeWeightedAveragePrice"
+    "divergence_condition": "BaselineValuation == InstantaneousSpotPrice AND InstantaneousSpotPrice is attacker-influenced within the same block prior to baseline recording, while InstantaneousSpotPrice != TimeWeightedAveragePrice"
   }
 }
 ```
