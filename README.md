@@ -1,60 +1,22 @@
-# Invaribreak Labs
+# Invaribreak Labs Research Repository
 
-**Invaribreak Labs is an invariant-based protocol risk analysis framework**
-focused on attack surfaces, incentive failures, and *lawful exploit paths*.
+> Auto-generated Index. Total Cases: 13
 
-## Overview
+| Case / Slug | Analysis | Invariant | Pattern | Exploit Path |
+|---|---|---|---|---|
+| **account-temporal-state-divergence-zero-balance-repay** | [Analysis](reports/analysis-account-temporal-state-divergence-zero-balance-repay.md) | [Def](invariants/INV-account-temporal-state-divergence-zero-balance-repay.md) | [Pattern](patterns/account-temporal-state-divergence-zero-balance-repay.md) | [Path](exploit-paths/account-temporal-state-divergence-zero-balance-repay.md) |
+| **collateral-state-divergence-missing-refund** | [Analysis](reports/analysis-collateral-state-divergence-missing-refund.md) | [Def](invariants/INV-collateral-state-divergence-missing-refund.md) | - | - |
+| **collateral-state-inconsistency-better-price-fill** | [Analysis](reports/analysis-collateral-state-inconsistency-better-price-fill.md) | [Def](invariants/INV-collateral-state-inconsistency-better-price-fill.md) | [Pattern](patterns/collateral-state-inconsistency-better-price-fill.md) | [Path](exploit-paths/collateral-state-inconsistency-better-price-fill.md) |
+| **dual-oracle-fail-open-on-revert** | - | - | [Pattern](patterns/dual-oracle-fail-open-on-revert.md) | - |
+| **dual-oracle-fail-open-on-secondary-revert** | [**Canonical**](reports/dual-oracle-fail-open-on-secondary-revert.md) | - | - | - |
+| **dual-oracle-must-not-fail-open** | - | [Def](invariants/INV-dual-oracle-must-not-fail-open.md) | - | - |
+| **epoch-gated-weight-retention** | - | - | - | [Path](exploit-paths/epoch-gated-weight-retention.md) |
+| **persistent-weight-must-track-active-stake** | - | [Def](invariants/INV-persistent-weight-must-track-active-stake.md) | - | - |
+| **persistent-weight-not-cleared-on-exit** | - | - | [Pattern](patterns/persistent-weight-not-cleared-on-exit.md) | - |
+| **price-temporal-state-divergence-manipulated-spot** | [Analysis](reports/analysis-price-temporal-state-divergence-manipulated-spot.md) | - | - | - |
+| **unstake-persistent-weight-not-cleared** | [**Canonical**](reports/unstake-persistent-weight-not-cleared.md) | - | - | - |
+| **valuation-temporal-state-divergence-spot-price-baseline** | [Analysis](reports/analysis-valuation-temporal-state-divergence-spot-price-baseline.md) | - | - | - |
+| **valuation-temporal-state-divergence-spot-twap-min** | [Analysis](reports/analysis-valuation-temporal-state-divergence-spot-twap-min.md) | [Def](invariants/INV-valuation-temporal-state-divergence-spot-twap-min.md) | [Pattern](patterns/valuation-temporal-state-divergence-spot-twap-min.md) | [Path](exploit-paths/valuation-temporal-state-divergence-spot-twap-min.md) |
 
-Invaribreak Labs publishes structured analyses of how protocols fail
-once their underlying assumptions or invariants no longer hold.
 
-Rather than centering on isolated vulnerabilities,
-the work here focuses on **system-level failure modes**, including:
-
-* protocol attack surfaces created by design constraints,
-* incentive misalignments that lead to rational but harmful behavior,
-* exploit and extraction paths arising from *lawful use of protocol rules*.
-
-All analyses follow a consistent structure to support comparison,
-reuse, and citation across systems.
-
-## Scope
-
-This repository documents:
-
-* protocol-level risk analyses under explicit assumptions,
-* recurring structural failure patterns observed across systems,
-* invariant assumptions and their breakpoints,
-* lawful exploit paths that do not rely on undefined behavior,
-  privileged access, or rule violations.
-
-## What this repository is not
-
-* This is **not** a formal security audit.
-* This is **not** a guarantee of protocol safety.
-* This is **not** a vulnerability disclosure service.
-
-The materials are intended for research, design review,
-and invariant-driven risk reasoning.
-
-## Structure
-
-* `reports/` — protocol-specific analyses and canonical instances
-* `patterns/` — recurring structural failure patterns
-* `invariants/` — invariant assumptions and violation conditions
-* `exploit-paths/` — lawful exploit and extraction paths
-* `analysis-structure.md` — the canonical analysis structure used across reports
-
-## Usage
-
-Readers and systems are encouraged to:
-
-* treat invariants as first-class design constraints,
-* reuse patterns and exploit paths across protocol reviews,
-* reference individual sections (Invariant, Break Point, Exploit Path)
-  as standalone analytical units.
-
-This repository is designed to function as a reusable
-**cognitive reference layer** for protocol analysis.
-
-Contributions are welcome in the form of structured analysis or discussion.
+*Last Updated: 2026-01-25T05:58:05.421Z*
